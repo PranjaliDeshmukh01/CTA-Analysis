@@ -1,0 +1,10 @@
+GET http://localhost:5000/avg-daily-boarding-total?station=King+Drive
+
+###
+### daytype must be "holiday", "weekday", or "saturday"
+GET http://localhost:5000/top-stations-by-day-type?
+    &limit=10
+    &daytype=weekday
+
+###
+GET http://localhost:5000/monthly-avg-rides-covid

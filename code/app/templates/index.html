@@ -1,0 +1,151 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Station Selector</title>
+    <!-- Load Bootstrap for styling -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        img {
+            min-height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="">Average Daily Boarding by Station</h1>
+        <p class="">Select a station from the dropdown to view the average daily boarding totals for that station.</p>
+        <div class="row">
+            <!-- Left column with a dropdown for station selection -->
+            <div class="col-md-6">
+                <label for="station1">Select Station:</label>
+                <select id="station1" class="form-control" onchange="updateImage('station1', 'image1')">
+                    <option value="" selected disabled>-- Select a station --</option>
+                    <!-- Loop through the station names to create dropdown options -->
+                    {% for station in station_names %}
+                    <option value="{{ station }}">{{ station }}</option>
+                    {% endfor %}
+                </select>
+                <img id="image1" src="/static/placeholder_graph.png" alt="Station 1 Image" class="img-fluid mt-3">
+            </div>
+
+            <!-- Right column with a dropdown for station selection -->
+            <div class="col-md-6">
+                <label for="station2">Select Station:</label>
+                <select id="station2" class="form-control" onchange="updateImage('station2', 'image2')">
+                    <option value="" selected disabled>-- Select a station --</option>
+                    <!-- Loop through the station names to create dropdown options -->
+                    {% for station in station_names %}
+                    <option value="{{ station }}">{{ station }}</option>
+                    {% endfor %}
+                </select>
+                <img id="image2" src="static/placeholder_graph.png" alt="Station 2 Image" class="img-fluid mt-3">
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <!-- Add title and message -->
+        <h1 class="">Top Stations by Day Type</h1>
+        <p class="">Shows top 5 stations for selected day type.</p>
+
+        <div class="row mt-4">
+            <!-- First column for holiday -->
+            <div class="col-md-4">
+                <label for="topStationDayType1">Select Day Type:</label>
+                <select id="topStationDayType1" class="form-control" onchange="updateDayTypeImage('topStationDayType1', 'image1')">
+                    <option value="holiday">Holiday</option>
+                </select>
+                <!-- Placeholder image initially -->
+                <img id="topStationImg1" src="/static/placeholder_graph.png" alt="Holiday Stations" class="img-fluid mt-3">
+            </div>
+
+            <!-- Second column for Saturday -->
+            <div class="col-md-4">
+                <label for="topStationDayType2">Select Day Type:</label>
+                <select id="topStationDayType2" class="form-control" onchange="updateDayTypeImage('topStationDayType2', 'image2')">
+                    <option value="saturday">Saturday</option>
+                </select>
+                <!-- Placeholder image initially -->
+                <img id="topStationImg2" src="/static/placeholder_graph.png" alt="Saturday Stations" class="img-fluid mt-3">
+            </div>
+
+            <!-- Third column for weekday -->
+            <div class="col-md-4">
+                <label for="topStationDayType3">Select Day Type:</label>
+                <select id="topStationDayType3" class="form-control" onchange="updateDayTypeImage('topStationDayType3', 'image3')">
+                    <option value="weekday">Weekday</option>
+                </select>
+                <!-- Placeholder image initially -->
+                <img id="topStationImg3" loading="/static/placeholder_graph.png" alt="Weekday Stations" class="img-fluid mt-3">
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container mt-5">
+        <h1 class="">Daily Boarding Count</h1>
+        <p class="">Compare daily boarding during normal and COVID-19 months</p>
+
+        <div class="row">
+            <div class="col-md-12">
+                <img id="imgCovidBoardingCount" src="/static/placeholder_graph.png" alt="Normal Months Boarding" class="img-fluid">
+
+                <script>
+                    document.getElementById("imgCovidBoardingCount").src = "/monthly-avg-rides-covid";
+                </script>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <h1 class="">Weather Data and Total Rides</h1>
+        <p class="">Explore the relationship between weather conditions and total rides.</p>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <h2 class="">Precipitation vs. Total Rides</h2>
+                <img id="Precipitation" src="/static/placeholder_graph.png" alt="Precipitation vs Total Rides" class="img-fluid">
+                <script>
+                    document.getElementById("Precipitation").src = "/precipitation-vs-total-rides"; 
+                </script>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <h2 class="">Snow vs. Total Rides</h2>
+                <img id="Snow" src="/static/placeholder_graph.png" alt="Snow vs Total Rides" class="img-fluid">
+                <script>
+                    document.getElementById("Snow").src = "/snow-vs-total-rides";
+                </script>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+    function updateImage(dropdownId, imageId) {
+        const dropdown = document.getElementById(dropdownId);
+        const station = dropdown.value;
+        const imageElement = document.getElementById(imageId);
+        imageElement.src = `/avg-daily-boarding-total?station=${station}`; // Update image source based on selection
+    }
+
+    function updateDayTypeImage(dropdownId, imageId) {
+        const dropdown = document.getElementById(dropdownId);
+        const daytype = dropdown.value;
+        const imageElement = document.getElementById(imageId);
+        imageElement.src = `/top-stations-by-day-type?daytype=${daytype}&limit=5`;  // Update image source based on selection
+    }
+
+    updateDayTypeImage('topStationDayType1', 'topStationImg1')
+    updateDayTypeImage('topStationDayType2', 'topStationImg2')
+    updateDayTypeImage('topStationDayType3', 'topStationImg3')
+
+    </script>
+</body>
+</html>
